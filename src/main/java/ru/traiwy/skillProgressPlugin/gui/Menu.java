@@ -16,9 +16,10 @@ public abstract class Menu implements InventoryHolder {
     public Menu(int size, @NotNull String title) {
         this.inventory = Bukkit.createInventory(this, size, title);
     }
-    public abstract void setup();
+    public abstract void setup(Player player);
 
     public void open(Player player) {
+        setup(player);
         player.openInventory(inventory);
     }
 }

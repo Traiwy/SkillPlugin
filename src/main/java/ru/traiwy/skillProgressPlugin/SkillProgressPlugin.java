@@ -1,13 +1,18 @@
 package ru.traiwy.skillProgressPlugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.traiwy.skillProgressPlugin.command.SkillCommand;
+import ru.traiwy.skillProgressPlugin.configuration.Configuration;
+import ru.traiwy.skillProgressPlugin.service.MenuService;
+
 
 public final class SkillProgressPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        MenuService menuService = new MenuService();
+        Configuration config = new Configuration(this);
+        getCommand("skill").setExecutor(new SkillCommand(menuService.getMain()));
     }
 
     @Override
