@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id 'com.gradleup.shadow' version '8.3.0'
+
 }
 
 group = 'ru.traiwy'
@@ -12,6 +14,7 @@ repositories {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
     }
+
 }
 
 dependencies {
@@ -19,6 +22,11 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
     implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation "com.mysql:mysql-connector-j:8.0.33"\
+
+}
+tasks.build {
+    dependsOn shadowJar
 }
 
 tasks {
@@ -29,6 +37,18 @@ tasks {
         minecraftVersion("1.20")
     }
 }
+
+shadowJar {
+    archiveClassifier.set('')
+    minimize()
+
+    dependencies {
+        include(dependency('com.zaxxer:HikariCP:.*'))
+    }
+
+    relocate 'com.zaxxer.hikari', 'traiwy.SkillProgressPlugin.libs.hikari'
+}
+
 
 def targetJavaVersion = 17
 java {

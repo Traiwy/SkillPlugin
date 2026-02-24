@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.maven.model.PluginConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.traiwy.skillProgressPlugin.configuration.message.MessageConfiguration;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -22,9 +20,9 @@ public class Configuration {
 
     public Configuration(JavaPlugin plugin) {
         this.plugin = plugin;
-        new MessageConfiguration();
         this.config = new File(plugin.getDataFolder(), "config.json");
         load();
+
     }
 
     private void load() {

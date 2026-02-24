@@ -9,14 +9,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 public class Database {
+    private final DatabaseConfiguration config;
     @Getter
     private HikariDataSource ds;
-    private DatabaseConfiguration config;
 
-    public Database() {
+
+    public Database(DatabaseConfiguration config) {
+        this.config = config;
         create();
         hikariconnect();
+        createTables();
     }
 
 
@@ -35,6 +39,7 @@ public class Database {
             throw new RuntimeException("Failed to create database", ex);
         }
     }
+
     private void hikariconnect() {
         final String url = "jdbc:mysql://" + config.host() + ":" + config.port() +
                 "/" + config.database() +
@@ -44,7 +49,7 @@ public class Database {
                 "&characterEncoding=UTF-8" +
                 "&serverTimezone=UTC";
 
-        final HikariConfig hikari = new HikariConfig();
+        HikariConfig hikari = new HikariConfig();
         hikari.setJdbcUrl(url);
         hikari.setUsername(config.user());
         hikari.setPassword(config.password());
@@ -54,6 +59,31 @@ public class Database {
         hikari.setPoolName("HomePluginPool");
 
         ds = new HikariDataSource(hikari);
+    }
+
+    private void createTables() {
+        String skill = """
+                CREATE TABLE IF NOT EXISTS `skills` (
+                    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                
+                    name VARCHAR(36)  NOT NULL,
+                    class VARCHAR(18) NOT NULL,
+                    level INTEGER NOT NULL,
+                    progress INTEGER)   
+                """;
+
+        try (Connection conn = ds.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            stmt.executeUpdate(skill);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to create tables", e);
+        }
+    }
+
+    public void shutdown() {
+        ds.close();
     }
 
 }

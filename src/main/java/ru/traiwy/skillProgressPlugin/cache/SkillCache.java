@@ -1,25 +1,26 @@
 package ru.traiwy.skillProgressPlugin.cache;
 
-import ru.traiwy.skillProgressPlugin.dto.Player;
+import ru.traiwy.skillProgressPlugin.dto.PlayerDTO;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SkillCache {
-    private final Map<String, Player> players = new HashMap<>();
+    private final Map<String, PlayerDTO> players = new HashMap<>();
 
-    public void addPlayer(String name, Player player) {
-        players.put(name, player);
+    public void addPlayer(String name, PlayerDTO playerDTO) {
+        players.put(name, playerDTO);
     }
-    public void removePlayer(Player player) {
-        players.remove(player);
+
+    public void removePlayer(PlayerDTO playerDTO) {
+        players.remove(playerDTO);
     }
 
     public void clear() {
         players.clear();
     }
 
-    public Player getPlayer(String name) {
+    public PlayerDTO getPlayer(String name) {
         return players.get(name);
     }
 

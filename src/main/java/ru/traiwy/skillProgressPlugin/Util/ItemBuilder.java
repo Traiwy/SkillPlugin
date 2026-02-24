@@ -16,6 +16,10 @@ public class ItemBuilder {
         this.meta = item.getItemMeta();
     }
 
+    public static ItemBuilder of(Material material) {
+        return new ItemBuilder(material);
+    }
+
     public ItemBuilder name(String name) {
         meta.setDisplayName(name);
         return this;
@@ -34,9 +38,5 @@ public class ItemBuilder {
     public ItemStack build() {
         item.setItemMeta(meta);
         return item;
-    }
-
-    public static ItemBuilder of(Material material) {
-        return new ItemBuilder(material);
     }
 }

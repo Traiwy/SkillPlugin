@@ -16,8 +16,10 @@ public class CacheListener implements Listener {
     public void onJoinEvent(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         cache.add(player.getName());
+        System.out.println("3i");
 
     }
+
     @EventHandler
     public void onLeaveEvent(PlayerQuitEvent event) {
     }

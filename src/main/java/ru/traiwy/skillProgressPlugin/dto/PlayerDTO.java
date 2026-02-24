@@ -1,6 +1,7 @@
 package ru.traiwy.skillProgressPlugin.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,9 +11,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Accessors(fluent = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Player {
+@AllArgsConstructor
+public class PlayerDTO {
     String name;
     CustomClass className;
     int level;
     double progress;
+
 }

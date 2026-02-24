@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import ru.traiwy.skillProgressPlugin.Util.ItemBuilder;
 import ru.traiwy.skillProgressPlugin.gui.Menu;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class MainMenu extends Menu {
     public MainMenu() {
@@ -17,15 +17,15 @@ public class MainMenu extends Menu {
     public void setup(Player player) {
         ItemStack item = new ItemBuilder(Material.PLAYER_HEAD)
                 .name("Ник игрока: " + player.getName())
-                .lore(Arrays.asList(
+                .lore(List.of(
                         "Выбранный класс игрока: "
                 )).build();
 
         ItemStack item2 = new ItemBuilder(Material.NETHER_STAR)
                 .name("Ваш уровень: ")
-                        .lore(Arrays.asList(
-                                "Ваш прогресс: "
-                        )).build();
+                .lore(List.of(
+                        "Ваш прогресс: "
+                )).build();
 
         getInventory().setItem(11, item);
         getInventory().setItem(15, item2);
