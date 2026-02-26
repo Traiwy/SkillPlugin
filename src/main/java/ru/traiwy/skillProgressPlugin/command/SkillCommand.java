@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.traiwy.skillProgressPlugin.cache.SkillCache;
 import ru.traiwy.skillProgressPlugin.command.impl.HelpCommand;
-import ru.traiwy.skillProgressPlugin.dto.PlayerDTO;
+import ru.traiwy.skillProgressPlugin.dto.User;
 import ru.traiwy.skillProgressPlugin.service.MenuService;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class SkillCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return false;
-        final PlayerDTO playerdto = cache.getPlayer(player.getName());
+        final User playerdto = cache.getPlayer(player.getName());
         if(playerdto == null){
             System.out.println("Player is null");
             return true;

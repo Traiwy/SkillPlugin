@@ -12,9 +12,9 @@ import lombok.experimental.FieldDefaults;
 @Accessors(fluent = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class PlayerDTO {
+public class User {
     String name;
-    CustomClass className;
+    Skill className;
     int level;
     double progress;
 

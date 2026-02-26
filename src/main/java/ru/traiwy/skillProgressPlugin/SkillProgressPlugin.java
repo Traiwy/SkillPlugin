@@ -18,13 +18,12 @@ public final class SkillProgressPlugin extends JavaPlugin {
     public void onEnable() {
         Configuration config = new Configuration(this);
         database = new Database(config.getConfiguration().database());
-        MenuService menuService = new MenuService();
-        DatabaseService databaseService = new DatabaseService(database);
+        PluginContext pluginContext = new PluginContext(database, config);
         SkillCache skillCache = new SkillCache();
-        CacheFacade cacheFacade = new CacheFacade(skillCache, databaseService);
+        CacheFacade cacheFacade = new CacheFacade(skillCache, pluginContext.databaseService());
 
-        getServer().getPluginManager().registerEvents(new CacheListener(cacheFacade), this);
-        getCommand("skill").setExecutor(new SkillCommand(menuService,skillCache));
+        getServer().getPluginManager().registerEvents(new CacheListener(cacheFacade, skillCache), this);
+        getCommand("skill").setExecutor(new SkillCommand(pluginContext.menuService(),skillCache));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package ru.traiwy.skillProgressPlugin.dto;
 
 
-public enum CustomClass {
+public enum Skill {
     WARRIOR,
     FARMER
 }

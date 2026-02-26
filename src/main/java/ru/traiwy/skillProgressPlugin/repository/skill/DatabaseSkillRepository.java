@@ -1,8 +1,8 @@
 package ru.traiwy.skillProgressPlugin.repository.skill;
 
 import lombok.AllArgsConstructor;
-import ru.traiwy.skillProgressPlugin.dto.CustomClass;
-import ru.traiwy.skillProgressPlugin.dto.PlayerDTO;
+import ru.traiwy.skillProgressPlugin.dto.Skill;
+import ru.traiwy.skillProgressPlugin.dto.User;
 import ru.traiwy.skillProgressPlugin.repository.Database;
 
 import java.sql.Connection;
@@ -19,7 +19,7 @@ public class DatabaseSkillRepository implements SkillRepository {
     private final Executor executor = Executors.newFixedThreadPool(3);
 
     @Override
-    public CompletableFuture<PlayerDTO> add(PlayerDTO entity) {
+    public CompletableFuture<User> add(User entity) {
         return CompletableFuture.supplyAsync(() -> {
             final String sql = "INSERT INTO skills (name, class, level, progress) VALUES (?,?, ?, ?)";
 
@@ -41,7 +41,7 @@ public class DatabaseSkillRepository implements SkillRepository {
     }
 
     @Override
-    public CompletableFuture<Void> delete(PlayerDTO entity) {
+    public CompletableFuture<Void> delete(User entity) {
         return CompletableFuture.runAsync(() -> {
             final String sql = "DELETE FROM skills WHERE name = ?";
             try (final Connection connection = dataSource.getDs().getConnection();
@@ -54,7 +54,7 @@ public class DatabaseSkillRepository implements SkillRepository {
     }
 
     @Override
-    public CompletableFuture<Void> update(PlayerDTO entity) {
+    public CompletableFuture<Void> update(User entity) {
         return CompletableFuture.runAsync(() -> {
             final String sql = """
                     UPDATE skills 
@@ -80,7 +80,7 @@ public class DatabaseSkillRepository implements SkillRepository {
     }
 
     @Override
-    public CompletableFuture<PlayerDTO> getPlayer(String name) {
+    public CompletableFuture<User> getPlayer(String name) {
         return CompletableFuture.supplyAsync(() -> {
             final String sql = "SELECT * FROM skills WHERE name = ?";
 
@@ -89,9 +89,9 @@ public class DatabaseSkillRepository implements SkillRepository {
                 ps.setString(1, name);
                 try (final ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return new PlayerDTO(
+                        return new User(
                                 name,
-                                CustomClass.valueOf(rs.getString("class")),
+                                Skill.valueOf(rs.getString("class")),
                                 rs.getInt("level"),
                                 rs.getDouble("progress")
                         );

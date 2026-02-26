@@ -1,7 +1,6 @@
 package ru.traiwy.skillProgressPlugin.service;
 
-import lombok.AllArgsConstructor;
-import ru.traiwy.skillProgressPlugin.dto.PlayerDTO;
+import ru.traiwy.skillProgressPlugin.dto.User;
 import ru.traiwy.skillProgressPlugin.repository.Database;
 import ru.traiwy.skillProgressPlugin.repository.skill.DatabaseSkillRepository;
 
@@ -15,20 +14,20 @@ public class DatabaseService {
         this.skillRepository = new DatabaseSkillRepository(database);
     }
 
-    public CompletableFuture<PlayerDTO> add(PlayerDTO playerDTO) {
-        return skillRepository.add(playerDTO);
+    public CompletableFuture<User> add(User user) {
+        return skillRepository.add(user);
     }
 
-    public CompletableFuture<Void> remove(PlayerDTO playerDTO) {
-        return skillRepository.delete(playerDTO);
+    public CompletableFuture<Void> remove(User user) {
+        return skillRepository.delete(user);
     }
 
-    public CompletableFuture<PlayerDTO> getPlayer(String name) {
+    public CompletableFuture<User> getPlayer(String name) {
         return skillRepository.getPlayer(name);
     }
 
-    public CompletableFuture<Void> update(PlayerDTO playerDTO) {
-        return skillRepository.update(playerDTO);
+    public CompletableFuture<Void> update(User user) {
+        return skillRepository.update(user);
     }
 
 }
