@@ -5,8 +5,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public record Button(ItemStack item, Consumer<InventoryClickEvent> action) {
+public record Icon(ItemStack item, Consumer<InventoryClickEvent> action) {
     public void onClick(InventoryClickEvent event) {
-        if(action != null) action.accept(event);
+        if (action != null) action.accept(event);
     }
 }

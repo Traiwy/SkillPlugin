@@ -3,30 +3,30 @@ package ru.traiwy.skillProgressPlugin.gui;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.jetbrains.annotations.NotNull;
 import ru.traiwy.skillProgressPlugin.PluginContext;
 import ru.traiwy.skillProgressPlugin.configuration.menu.IconConfiguration;
+import ru.traiwy.skillProgressPlugin.gui.button.Icon;
 
-import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
 public abstract class Menu implements InventoryHolder, Listener {
-    private final Inventory inventory;
-    private int size;
-    private String title;
+    protected final String id;
+    protected final Map<Integer, Icon> buttons = new HashMap<>();
+    private final PluginContext context;
     protected Map<Integer, IconConfiguration> slots = new HashMap<>();
+    private Inventory inventory;
 
     public Menu(PluginContext context, String id) {
+        this.id = id;
+        this.context = context;
         this.inventory = Bukkit.createInventory(
-                        this,
+                this,
                 context.configuration().getConfiguration().menus().get(id).size(),
                 context.configuration().getConfiguration().menus().get(id).title());
     }
@@ -34,21 +34,35 @@ public abstract class Menu implements InventoryHolder, Listener {
     public abstract void setup(Player player);
 
     public void open(Player player) {
-        if(inventory == null) return;
+        var menuCfg = context.configuration().getConfiguration().menus().get(id);
+        this.inventory = Bukkit.createInventory(this, menuCfg.size(), menuCfg.title());
+        buttons.clear();
+        slots.clear();
+        menuCfg.icons().forEach(icon -> {
+            slots.put(icon.slot(), icon);
+        });
+
         setup(player);
         player.openInventory(inventory);
     }
 
-    @EventHandler
     public void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
 
         int slot = event.getRawSlot();
-        if(slot < 0 || slot >= inventory.getSize()) return;
+        if (slot < 0 || slot >= inventory.getSize()) return;
 
-        IconConfiguration slotsIcon = slots.get(slot);
-        if(slotsIcon != null) {
-            slotsIcon.action();
+        Player player = (Player) event.getWhoClicked();
+
+        Icon button = buttons.get(slot);
+        if (button != null) {
+            button.onClick(event);
+            return;
+        }
+
+        IconConfiguration icon = slots.get(slot);
+        if (icon != null && icon.action() != null && !icon.action().isEmpty()) {
+            context.menuService().registry().execute(icon.action(), player);
         }
     }
 

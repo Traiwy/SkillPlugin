@@ -4,10 +4,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.traiwy.skillProgressPlugin.cache.SkillCache;
 import ru.traiwy.skillProgressPlugin.command.SkillCommand;
 import ru.traiwy.skillProgressPlugin.configuration.Configuration;
+import ru.traiwy.skillProgressPlugin.gui.MenuListener;
 import ru.traiwy.skillProgressPlugin.listener.CacheListener;
 import ru.traiwy.skillProgressPlugin.repository.Database;
-import ru.traiwy.skillProgressPlugin.service.DatabaseService;
-import ru.traiwy.skillProgressPlugin.service.MenuService;
 import ru.traiwy.skillProgressPlugin.service.facade.CacheFacade;
 
 
@@ -23,7 +22,8 @@ public final class SkillProgressPlugin extends JavaPlugin {
         CacheFacade cacheFacade = new CacheFacade(skillCache, pluginContext.databaseService());
 
         getServer().getPluginManager().registerEvents(new CacheListener(cacheFacade, skillCache), this);
-        getCommand("skill").setExecutor(new SkillCommand(pluginContext.menuService(),skillCache));
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
+        getCommand("skill").setExecutor(new SkillCommand(pluginContext.menuService(), skillCache));
     }
 
     @Override

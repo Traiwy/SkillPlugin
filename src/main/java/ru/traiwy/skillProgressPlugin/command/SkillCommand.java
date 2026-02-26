@@ -32,16 +32,16 @@ public class SkillCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return false;
         final User playerdto = cache.getPlayer(player.getName());
-        if(playerdto == null){
+        if (playerdto == null) {
             System.out.println("Player is null");
             return true;
         }
 
         if (playerdto.className() == null) {
-            service.getChoose().open(player);
+            service.choose().open(player);
             return true;
         }
-        service.getMain().open(player);
+        service.main().open(player);
         return true;
     }
 
