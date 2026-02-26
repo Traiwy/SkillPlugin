@@ -11,7 +11,7 @@ public class MenuActionRegistry {
     private final Map<String, MenuAction> actions = new HashMap<>();
 
     public MenuActionRegistry(PluginContext context) {
-        register("choose_class", new ChooseClassAction());
+        register("choose_class", new ChooseClassAction(context.skillCache(), context.menuService()));
 
     }
 

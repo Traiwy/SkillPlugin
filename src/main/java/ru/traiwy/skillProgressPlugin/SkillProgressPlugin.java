@@ -18,12 +18,9 @@ public final class SkillProgressPlugin extends JavaPlugin {
         Configuration config = new Configuration(this);
         database = new Database(config.getConfiguration().database());
         PluginContext pluginContext = new PluginContext(database, config);
-        SkillCache skillCache = new SkillCache();
-        CacheFacade cacheFacade = new CacheFacade(skillCache, pluginContext.databaseService());
-
-        getServer().getPluginManager().registerEvents(new CacheListener(cacheFacade, skillCache), this);
+        getServer().getPluginManager().registerEvents(new CacheListener(pluginContext.cacheFacade(), pluginContext.skillCache()), this);
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
-        getCommand("skill").setExecutor(new SkillCommand(pluginContext.menuService(), skillCache));
+        getCommand("skill").setExecutor(new SkillCommand(pluginContext.menuService(),  pluginContext.skillCache()));
     }
 
     @Override
