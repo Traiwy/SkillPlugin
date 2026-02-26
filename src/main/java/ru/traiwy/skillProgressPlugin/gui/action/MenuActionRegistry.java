@@ -22,9 +22,9 @@ public class MenuActionRegistry {
     public void execute(String fullAction, Player player) {
         if (fullAction == null || fullAction.isEmpty()) return;
 
-        String[] parts = fullAction.split(":");
-        String key = parts[0].toLowerCase();
-        String[] args = parts.length > 1 ? parts[1].split(",") : new String[0];
+        final String[] parts = fullAction.split(":");
+        final String key = parts[0].toLowerCase();
+        final String[] args = parts.length > 1 ? parts[1].split(",") : new String[0];
 
         MenuAction action = actions.get(key);
         if (action != null) {

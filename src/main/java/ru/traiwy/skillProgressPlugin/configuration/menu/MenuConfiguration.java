@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import ru.traiwy.skillProgressPlugin.PluginContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class MenuConfiguration {
     String type = "type";
     String title = "title";
     int size = 54;
+
     List<IconConfiguration> icons = new ArrayList<>(List.of(
             new IconConfiguration()
     ));

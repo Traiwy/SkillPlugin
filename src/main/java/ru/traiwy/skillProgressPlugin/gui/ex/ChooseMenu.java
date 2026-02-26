@@ -20,7 +20,7 @@ public class ChooseMenu extends Menu {
     public void setup(Player player) {
         List<IconConfiguration> icons = context.configuration().getConfiguration().menus().get("choose_menu").icons();
         for (IconConfiguration icon : icons) {
-            ItemStack item = icon.build();
+            ItemStack item = icon.build(player, context);
             getInventory().setItem(icon.slot(), item);
         }
 

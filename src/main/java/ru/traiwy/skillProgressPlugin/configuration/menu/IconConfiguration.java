@@ -6,8 +6,11 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import ru.traiwy.skillProgressPlugin.PluginContext;
+import ru.traiwy.skillProgressPlugin.Util.ItemBuilder;
+import ru.traiwy.skillProgressPlugin.dto.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,33 +27,31 @@ public class IconConfiguration {
     String name = "name";
     List<String> lore = new ArrayList<>();
 
-    public ItemStack build() {
+
+    public ItemStack build(Player player, PluginContext context) {
 
         if (type == null) {
             throw new IllegalStateException("Material type is null");
         }
 
         String normalized = type.toUpperCase();
-
         if (normalized.contains(":")) {
             normalized = normalized.split(":")[1];
         }
 
         final Material material = Material.matchMaterial(normalized);
-
         if (material == null) {
             throw new IllegalArgumentException("Invalid material: " + type);
         }
 
-        final ItemStack item = new ItemStack(material, amount);
-
-        final ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            if (name != null) meta.setDisplayName(name);
-            if (lore != null) meta.setLore(lore);
-            item.setItemMeta(meta);
-        }
-
-        return item;
+        User user = context.skillCache().getPlayer(player.getName());
+        return new ItemBuilder(material, amount)
+                .name(name)
+                .lore(lore)
+                .replace("{name}", user.name())
+                .replace("{class}", user.className().name())
+                .replace("{level}", String.valueOf((user.level())))
+                .replace("{progress}", String.valueOf(user.progress()))
+                .build();
     }
 }

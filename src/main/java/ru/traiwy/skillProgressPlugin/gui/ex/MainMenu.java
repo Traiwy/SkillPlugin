@@ -22,7 +22,7 @@ public class MainMenu extends Menu {
 
         List<IconConfiguration> icons = context.configuration().getConfiguration().menus().get("main_menu").icons();
         for (IconConfiguration icon : icons) {
-            ItemStack item = icon.build();
+            ItemStack item = icon.build(player, context);
             getInventory().setItem(icon.slot(), item);
         }
 
