@@ -8,5 +8,7 @@ public interface Repository<T> {
 
     CompletableFuture<Void> delete(T entity);
 
-    CompletableFuture<Void> update(T entity);
+    default CompletableFuture<Void> update(T entity) {
+        return null;
+    }
 }

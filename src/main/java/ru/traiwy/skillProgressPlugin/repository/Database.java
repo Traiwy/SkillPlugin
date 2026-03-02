@@ -56,13 +56,13 @@ public class Database {
 
         hikari.setMaximumPoolSize(10);
         hikari.setMinimumIdle(2);
-        hikari.setPoolName("HomePluginPool");
+        hikari.setPoolName("SkillProgressPlugin");
 
         ds = new HikariDataSource(hikari);
     }
 
     private void createTables() {
-        String skill = """
+        final String skill = """
                 CREATE TABLE IF NOT EXISTS `skills` (
                     `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
                 
@@ -71,11 +71,21 @@ public class Database {
                     level INTEGER NOT NULL,
                     progress INTEGER)   
                 """;
+        final String tasks = """
+                CREATE TABLE IF NOT EXISTS `tasks` (
+                task_id VARCHAR(36) PRIMARY KEY,
+                skill_id BIGINT NOT NULL,
+                data TEXT NOT NULL,
+                
+                FOREIGN KEY (skill_id) REFERENCES skills(id) ON DELETE CASCADE);
+                """;
+
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate(skill);
+            stmt.executeUpdate(tasks);
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create tables", e);
